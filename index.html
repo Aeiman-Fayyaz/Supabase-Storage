@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Upload Profile Picture | BLOG Breeze</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="bootstrap.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -12,6 +12,63 @@
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
+<section style="background-color: #2779e2;">
+    <div class="container p-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-9">
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body">
+                        <div class="row align-items-center py-3">
+                            <div class="col-md-3 ps-5">
+                                <h6 class="mb-0">Full Name</h6>
+                            </div>
+                            <div class="col-md-9 pe-5">
+                                <input type="text" id="fullName" class="form-control form-control-lg"
+                                    placeholder="John Doe" />
+                            </div>
+                        </div>
+                        <hr class="mx-n3">
+                        <div class="row align-items-center py-3">
+                            <div class="col-md-3 ps-5">
+                                <h6 class="mb-0">Email address</h6>
+                            </div>
+                            <div class="col-md-9 pe-5">
+                                <input type="email" id="emailAdress" class="form-control form-control-lg"
+                                    placeholder="example@example.com" />
+                            </div>
+                        </div>
+                        <hr class="mx-n3">
+                        <div class="row align-items-center pt-4 pb-3">
+                            <div class="col-md-3 ps-5">
+                                <h6 class="mb-0">Password</h6>
+                            </div>
+                            <div class="col-md-9 pe-5">
+                                <input type="password" id="userPassword" class="form-control form-control-lg" />
+                            </div>
+                        </div>
+                        <hr class="mx-n3">
+                        <div class="row align-items-center py-3">
+                            <div class="col-md-3 ps-5">
+                                <h6 class="mb-0">Upload profile picture</h6>
+                            </div>
+                            <div class="col-md-9 pe-5">
+                                <input class="form-control form-control-lg" id="userProfilePic" type="file" />
+                                <div class="small text-muted mt-2">Upload your profile picture. Max
+                                    file size 50 MB</div>
+                            </div>
+                        </div>
+                        <hr class="mx-n3">
+                        <div class="px-5 py-4">
+                            <button type="button" id="signUp" data-mdb-button-init data-mdb-ripple-init
+                                class="btn btn-primary btn-lg">Sign up</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 
 <!-- Supabase Javascript -->
