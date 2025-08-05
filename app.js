@@ -22,7 +22,9 @@ signUp &&
     // Getting User Data and destructuring
     const {
       data: { user },
+      error
     } = await client.auth.getUser();
+    
     console.log(user);
 
     // Set file extension for saving, update and delete
@@ -44,67 +46,97 @@ signUp &&
         if (user) {
           console.log(user);
           // Destructuring Profile data name
-          const { data: profileUrl, error } = await client.storage.from('profilepic')
-          .upload(`Avatars/user-${user.id}.${fileExt}` , userProfilePic.files[0],{
-            upsert: true 
-          });
-          if(error){
+          const { data: profileUrl, error } = await client.storage
+            .from("profilepic")
+            .upload(
+              `Avatars/user-${user.id}.${fileExt}`,
+              userProfilePic.files[0],
+              {
+                upsert: true,
+              }
+            );
+            if(user){
+              const {data , error} = await client.from("users_profile")
+              .insert({
+                user_id: user.id ,
+                full_name: fullName,
+                url: profileUrl.fullPath,
+                email: emailAdress,
+              })
+            }
+          if (error) {
             console.log(error);
-          }else{
-            console.log("upload data:" , profileUrl);
-
+          } else {
+            console.log("upload data:", profileUrl);
             // Getting Profile URL
-            const {data : {pulicUrl}} = client.storage.from('profilepic').getPublicUrl(`Avatars/user-${user.id}.${fileExt}`)
-            console.log(pulicUrl);
+            const {
+              data: { publicUrl },
+            } = client.storage
+              .from("profilepic")
+              .getPublicUrl(`Avatars/user-${user.id}.${fileExt}`);
+            console.log(publicUrl);
           }
         }
-      } catch (error){
-        console.log("Signup Error:" , error);
-        if(error.message.includes("invalid format")){
-          alert("Please enter valid format")
+        // Alert before redirection
+    alert("Signup successful! Redirecting to post page...");
+    window.location.href = "/post.html";
+      } catch (error) {
+        console.log("Signup Error:", error);
+        if (error.message.includes("invalid format")) {
+          alert("Please enter valid format");
         }
       }
-    }else{
-      if(email){
-        alert("Please enter password")
-      }else{
-        alert("please enter email")
+    } else {
+      if (email) {
+        alert("Please enter password");
+      } else {
+        alert("please enter email");
       }
     }
   });
-
 
 // Fetch Profile Picture and User Details
 
 // creating function SHOW DETAILS
 
-const showDetails = async (profilepic , email , fullName) => {
-  // Nested destructuring 
-  const {data: { user: {id: userId , email: userEmail} } , error} = await client.auth.getUser()
-  if(email){
-    email.value = userEmail
+const showDetails = async (profilepic, email, full_name) => {
+  try{
+    // Nested destructuring
+  const {
+    data: {
+      user: { id: user_id, email: userEmail },
+    },
+    error,
+  } = await client.auth.getUser();
+  // User error
+  // if (userError) throw error;
+  if (email) {
+    email.value = userEmail;
   }
-  if(userId){
-    const{data: [{fullName: dbName , profilepic: pulicUrl}] , error} = await client.from('users_profile').select()
-    .eq('user_id' , userId)
-
-    console.log(fullName , profilepic);
-    if(pulicUrl){
-      const avatar = document.getElementById("avatar")
-      if(avatar){
-        avatar.src = pulicUrl
+  if (user_id) {
+    const {
+      data:[{ full_name: dbName, profilepic: publicUrl }], error }= await client
+      .from("users_profile")
+      .select()
+      .eq("user_id", user_id);
+    if (publicUrl) {
+      const avatar = document.getElementById("avatar");
+      if (avatar) {
+        avatar.src = publicUrl;
       }
-      if(profilepic){
-        profilepic.src = pulicUrl
-        fullName.value = dbName
+      if (profilepic) {
+        profilepic.src = publicUrl;
+        full_name.value = dbName
       }
-    }else{
-      console.log(error);
     }
-  }else{
-    console.log(error);
+  } else {
+    console.log("No profile data found for this user");
+  }
+  }catch (error) {
+    console.error("Error in showDetails:", error);
   }
 }
+
 // Page direction when user details show
 if(window.location.pathname == '/post.html'){
   showDetails()
